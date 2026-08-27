@@ -23,14 +23,13 @@ def get_db():
     return conn
 
 # =============================================
-# СОЗДАНИЕ БАЗЫ ДАННЫХ (ЧИСТАЯ)
+# БАЗА ДАННЫХ
 # =============================================
 
 def init_db():
     conn = sqlite3.connect(DB_NAME)
     cur = conn.cursor()
     
-    # Таблица пользователей
     cur.execute('''
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -43,7 +42,6 @@ def init_db():
         )
     ''')
     
-    # Таблица услуг
     cur.execute('''
         CREATE TABLE IF NOT EXISTS services (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -55,7 +53,6 @@ def init_db():
         )
     ''')
     
-    # Таблица заказов
     cur.execute('''
         CREATE TABLE IF NOT EXISTS orders (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -66,7 +63,6 @@ def init_db():
         )
     ''')
     
-    # Таблица техподдержки
     cur.execute('''
         CREATE TABLE IF NOT EXISTS support (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -78,11 +74,9 @@ def init_db():
         )
     ''')
     
-    # ===== ДОБАВЛЯЕМ АДМИНА =====
     admin_pass = hash_password("txtserphelog")
     cur.execute('INSERT OR IGNORE INTO users (username, password, is_admin) VALUES (?, ?, 1)', ('admLeakshop', admin_pass))
     
-    # ===== ДОБАВЛЯЕМ УСЛУГИ =====
     services = [
         ('🚀 GAME BOOST', 'Чистка Windows + настройка игры + TwikBooster', 700, '🚀', 'Пакеты'),
         ('⚡ MAX FPS REBOOT', 'Чистка + BIOS + разгон GPU + сеть', 899, '⚡', 'Пакеты'),
@@ -101,13 +95,14 @@ def init_db():
     conn.close()
     print("✅ База данных создана!")
 
+init_db()
+
 # =============================================
 # МАРШРУТЫ
 # =============================================
 
 @app.route('/')
 def index():
-    session.permanent = True
     conn = get_db()
     services = conn.execute('SELECT * FROM services').fetchall()
     conn.close()
@@ -134,7 +129,6 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        session.permanent = True
         username = request.form['username']
         password = hash_password(request.form['password'])
         conn = get_db()
@@ -263,7 +257,8 @@ def cart():
     if not cart:
         return render_template('cart.html', services=[], total=0, user=session['user'])
     conn = get_db()
-    services = conn.execute('SELECT * FROM services WHERE id IN ({})'.format(','.join(['?']*len(cart))), cart).fetchall()
+    placeholders = ','.join(['?'] * len(cart))
+    services = conn.execute(f'SELECT * FROM services WHERE id IN ({placeholders})', cart).fetchall()
     conn.close()
     total = sum(s['price'] for s in services)
     return render_template('cart.html', services=services, total=total, user=session['user'])
@@ -332,5 +327,4 @@ def support():
 # =============================================
 
 if __name__ == '__main__':
-    init_db()
-    app.run(debug=False, host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000)
