@@ -1,25 +1,233 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Регистрация</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация — LeakShop</title>
     <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            background: #0a0a0a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .auth-container {
+            background: #111;
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid #222;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+        }
+
+        .auth-container .logo {
+            text-align: center;
+            font-size: 2em;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+        .auth-container .logo span {
+            color: #888;
+        }
+
+        .auth-container .sub {
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 30px;
+        }
+
+        .auth-container label {
+            display: block;
+            color: #aaa;
+            font-size: 0.85em;
+            margin-bottom: 5px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .auth-container .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .auth-container .input-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1px solid #2a2a2a;
+            background: #0a0a0a;
+            color: #ddd;
+            font-size: 1em;
+            transition: 0.2s;
+            box-sizing: border-box;
+        }
+        .auth-container .input-group input:focus {
+            outline: none;
+            border-color: #666;
+            background: #0d0d0d;
+        }
+
+        .auth-container .input-group .icon {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #444;
+            font-size: 1.1em;
+            pointer-events: none;
+        }
+
+        .auth-container .btn {
+            width: 100%;
+            padding: 14px;
+            background: #2a2a2a;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1em;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 10px;
+        }
+        .auth-container .btn:hover {
+            background: #444;
+        }
+
+        .auth-container .error {
+            background: #1a0a0a;
+            border-left: 3px solid #f87171;
+            color: #f87171;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+
+        .auth-container .links {
+            text-align: center;
+            margin-top: 20px;
+            color: #555;
+            font-size: 0.9em;
+        }
+        .auth-container .links a {
+            color: #aaa;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .auth-container .links a:hover {
+            color: #fff;
+        }
+
+        .auth-container .divider {
+            text-align: center;
+            color: #333;
+            font-size: 0.8em;
+            margin: 20px 0 10px;
+            position: relative;
+        }
+        .auth-container .divider::before,
+        .auth-container .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: #222;
+        }
+        .auth-container .divider::before { left: 0; }
+        .auth-container .divider::after { right: 0; }
+
+        .auth-container .discord-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 14px;
+            background: #1a1a1a;
+            color: #aaa;
+            border: 1px solid #2a2a2a;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+        .auth-container .discord-btn:hover {
+            background: #222;
+            border-color: #444;
+        }
+
+        .auth-container .terms {
+            color: #555;
+            font-size: 0.8em;
+            text-align: center;
+            margin: 15px 0 10px;
+        }
+        .auth-container .terms a {
+            color: #888;
+            text-decoration: none;
+        }
+        .auth-container .terms a:hover {
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="form-box">
-            <h2>📝 Регистрация</h2>
-            {% if error %}
-            <div class="error">{{ error }}</div>
-            {% endif %}
-            <form method="post">
-                <input type="text" name="username" placeholder="Логин" required>
-                <input type="password" name="password" placeholder="Пароль" required>
-                <input type="text" name="discord_id" placeholder="Discord ID (необязательно)">
-                <button type="submit">Зарегистрироваться</button>
-            </form>
-            <p style="text-align:center;margin-top:15px;color:#8892a8;">Уже есть аккаунт? <a href="/login" style="color:#4f8cf7;">Войди</a></p>
+
+    <div class="auth-container">
+        <div class="logo">⚡ <span>Leak</span>Shop</div>
+        <div class="sub">Создай аккаунт</div>
+
+        {% if error %}
+        <div class="error">❌ {{ error }}</div>
+        {% endif %}
+
+        <form method="post">
+            <div class="input-group">
+                <label>Логин</label>
+                <input type="text" name="username" placeholder="Придумай логин" required>
+                <span class="icon">👤</span>
+            </div>
+
+            <div class="input-group">
+                <label>Пароль</label>
+                <input type="password" name="password" placeholder="Придумай пароль" required>
+                <span class="icon">🔒</span>
+            </div>
+
+            <div class="input-group">
+                <label>Discord ID (необязательно)</label>
+                <input type="text" name="discord_id" placeholder="Твой Discord ID">
+                <span class="icon">💬</span>
+            </div>
+
+            <div style="margin: 15px 0;">
+                <label style="display:flex;align-items:center;gap:10px;font-weight:400;color:#666;font-size:0.85em;cursor:pointer;">
+                    <input type="checkbox" name="terms" required style="accent-color:#666;width:18px;height:18px;">
+                    Я принимаю <a href="#" style="color:#888;">условия использования</a>
+                </label>
+            </div>
+
+            <button type="submit" class="btn">Зарегистрироваться</button>
+        </form>
+
+        <div class="divider">или</div>
+
+        <a href="https://discord.com" class="discord-btn">💬 Зарегистрироваться через Discord</a>
+
+        <div class="links">
+            Уже есть аккаунт? <a href="/login">Войди</a>
         </div>
     </div>
+
 </body>
 </html>
