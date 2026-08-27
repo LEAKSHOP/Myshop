@@ -1,11 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from datetime import timedelta
 import sqlite3
 import hashlib
-import secrets
 import os
 
 app = Flask(__name__)
-app.secret_key = secrets.token_hex(32)
+app.secret_key = 'leakshop_secret_key_2024_never_share_with_anyone_12345'
+app.permanent_session_lifetime = timedelta(days=30)
 
 DB_NAME = os.path.join(os.path.dirname(__file__), "shop.db")
 
@@ -22,13 +23,14 @@ def get_db():
     return conn
 
 # =============================================
-# БАЗА ДАННЫХ
+# СОЗДАНИЕ БАЗЫ ДАННЫХ (ЧИСТАЯ)
 # =============================================
 
 def init_db():
     conn = sqlite3.connect(DB_NAME)
     cur = conn.cursor()
     
+    # Таблица пользователей
     cur.execute('''
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -41,6 +43,7 @@ def init_db():
         )
     ''')
     
+    # Таблица услуг
     cur.execute('''
         CREATE TABLE IF NOT EXISTS services (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -52,6 +55,7 @@ def init_db():
         )
     ''')
     
+    # Таблица заказов
     cur.execute('''
         CREATE TABLE IF NOT EXISTS orders (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -62,6 +66,7 @@ def init_db():
         )
     ''')
     
+    # Таблица техподдержки
     cur.execute('''
         CREATE TABLE IF NOT EXISTS support (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -73,11 +78,11 @@ def init_db():
         )
     ''')
     
-    # Админ: admLeakshop / txtserphelog
+    # ===== ДОБАВЛЯЕМ АДМИНА =====
     admin_pass = hash_password("txtserphelog")
     cur.execute('INSERT OR IGNORE INTO users (username, password, is_admin) VALUES (?, ?, 1)', ('admLeakshop', admin_pass))
     
-    # Услуги
+    # ===== ДОБАВЛЯЕМ УСЛУГИ =====
     services = [
         ('🚀 GAME BOOST', 'Чистка Windows + настройка игры + TwikBooster', 700, '🚀', 'Пакеты'),
         ('⚡ MAX FPS REBOOT', 'Чистка + BIOS + разгон GPU + сеть', 899, '⚡', 'Пакеты'),
@@ -94,8 +99,7 @@ def init_db():
     
     conn.commit()
     conn.close()
-
-init_db()
+    print("✅ База данных создана!")
 
 # =============================================
 # МАРШРУТЫ
@@ -103,6 +107,7 @@ init_db()
 
 @app.route('/')
 def index():
+    session.permanent = True
     conn = get_db()
     services = conn.execute('SELECT * FROM services').fetchall()
     conn.close()
@@ -129,6 +134,7 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
+        session.permanent = True
         username = request.form['username']
         password = hash_password(request.form['password'])
         conn = get_db()
@@ -161,16 +167,13 @@ def profile():
     conn.close()
     return render_template('profile.html', user=session['user'], orders=orders)
 
-# ===== РЕДАКТИРОВАНИЕ ПРОФИЛЯ =====
 @app.route('/profile/edit', methods=['POST'])
 def edit_profile():
     if 'user' not in session:
         return redirect(url_for('login'))
-    
     new_username = request.form.get('new_username', '').strip()
     if not new_username:
         return redirect(url_for('profile'))
-    
     conn = get_db()
     try:
         conn.execute('UPDATE users SET username = ? WHERE id = ?', (new_username, session['user']['id']))
@@ -194,7 +197,6 @@ def discord_bind():
         return redirect(url_for('login'))
     return redirect(url_for('profile'))
 
-# ===== АДМИНКА =====
 @app.route('/admin')
 def admin():
     if 'user' not in session or session['user']['is_admin'] != 1:
@@ -253,7 +255,6 @@ def reply_support(support_id):
     conn.close()
     return redirect(url_for('admin'))
 
-# ===== КОРЗИНА =====
 @app.route('/cart')
 def cart():
     if 'user' not in session:
@@ -308,7 +309,6 @@ def order():
     session.modified = True
     return redirect(url_for('profile'))
 
-# ===== ТЕХПОДДЕРЖКА =====
 @app.route('/support', methods=['GET', 'POST'])
 def support():
     if 'user' not in session:
@@ -332,4 +332,5 @@ def support():
 # =============================================
 
 if __name__ == '__main__':
+    init_db()  # Автоматически создаст базу при старте
     app.run(debug=True, host='0.0.0.0', port=5000)
