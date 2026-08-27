@@ -1,47 +1,263 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Поддержка</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Техподдержка — LeakShop</title>
     <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            background: #0a0a0a;
+            color: #d0d0d0;
+            padding: 20px;
+        }
+
+        .support-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .support-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #222;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .support-header h1 {
+            font-size: 1.8em;
+            color: #fff;
+        }
+        .support-header h1 span {
+            color: #888;
+        }
+
+        .support-header nav a {
+            color: #aaa;
+            text-decoration: none;
+            margin-left: 20px;
+            transition: 0.2s;
+        }
+        .support-header nav a:hover {
+            color: #fff;
+        }
+
+        /* ===== ФОРМА ===== */
+        .support-form {
+            background: #111;
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid #222;
+            margin: 30px 0;
+        }
+
+        .support-form h2 {
+            color: #fff;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+
+        .support-form textarea {
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid #2a2a2a;
+            background: #0a0a0a;
+            color: #ddd;
+            font-size: 1em;
+            min-height: 120px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+        .support-form textarea:focus {
+            outline: none;
+            border-color: #555;
+        }
+
+        .support-form button {
+            margin-top: 15px;
+            padding: 12px 32px;
+            background: #2a2a2a;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .support-form button:hover {
+            background: #444;
+        }
+
+        /* ===== СПИСОК ОБРАЩЕНИЙ ===== */
+        .tickets-list {
+            margin-top: 30px;
+        }
+
+        .tickets-list h2 {
+            color: #fff;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #222;
+        }
+
+        .ticket-item {
+            background: #111;
+            padding: 18px 22px;
+            border-radius: 12px;
+            border: 1px solid #1a1a1a;
+            margin-bottom: 15px;
+            transition: 0.2s;
+        }
+        .ticket-item:hover {
+            border-color: #333;
+        }
+
+        .ticket-item .head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .ticket-item .head .id {
+            color: #666;
+            font-size: 0.85em;
+        }
+
+        .ticket-item .head .status {
+            padding: 3px 16px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .ticket-item .head .status.new {
+            background: #2a1a1a;
+            color: #f87171;
+        }
+        .ticket-item .head .status.answered {
+            background: #1a2a1a;
+            color: #6fcf97;
+        }
+        .ticket-item .head .status.closed {
+            background: #1a1a1a;
+            color: #555;
+        }
+
+        .ticket-item .message {
+            color: #aaa;
+            margin: 8px 0 12px;
+            padding: 10px 14px;
+            background: #0a0a0a;
+            border-radius: 8px;
+            border-left: 3px solid #333;
+        }
+
+        .ticket-item .reply {
+            background: #0d0d0d;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border-left: 3px solid #555;
+            color: #999;
+            margin-top: 10px;
+        }
+        .ticket-item .reply strong {
+            color: #ddd;
+        }
+
+        .empty {
+            text-align: center;
+            color: #555;
+            padding: 40px 0;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #666;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .back-link:hover {
+            color: #aaa;
+        }
+
+        @media (max-width: 768px) {
+            .support-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .support-header nav a {
+                margin: 0 10px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🛠 Техподдержка</h1>
-            <nav>
-                <a href="/">Главная</a>
-                <a href="/profile">👤 {{ user.username }}</a>
-                <a href="/logout">🚪 Выйти</a>
-            </nav>
-        </header>
 
-        <div class="form-box" style="max-width:600px;">
-            <h3>📩 Создать обращение</h3>
-            <form method="post">
-                <textarea name="message" placeholder="Опишите вашу проблему..." required></textarea>
-                <button type="submit">Отправить</button>
-            </form>
-        </div>
+<div class="support-container">
 
-        <div style="margin-top:30px;">
-            <h3>📋 Мои обращения</h3>
-            {% if tickets %}
-                {% for t in tickets %}
-                <div class="order-item">
-                    <span>#{{ t.id }}: {{ t.message[:50] }}...</span>
-                    <span class="status">{{ t.status }}</span>
-                </div>
-                {% if t.reply %}
-                <div style="background:#1a2535;padding:10px;border-radius:8px;margin-bottom:10px;border-left:3px solid #4f8cf7;">
-                    <strong>💬 Ответ:</strong> {{ t.reply }}
-                </div>
-                {% endif %}
-                {% endfor %}
-            {% else %}
-                <p style="color:#8892a8;">У вас нет обращений.</p>
-            {% endif %}
-        </div>
+    <!-- ШАПКА -->
+    <header class="support-header">
+        <h1>🛠 <span>Техподдержка</span></h1>
+        <nav>
+            <a href="/">🏠 Главная</a>
+            <a href="/profile">👤 Профиль</a>
+            <a href="/logout">🚪 Выйти</a>
+        </nav>
+    </header>
+
+    <!-- ФОРМА СОЗДАНИЯ ОБРАЩЕНИЯ -->
+    <div class="support-form">
+        <h2>📩 Создать обращение</h2>
+        <form method="post">
+            <textarea name="message" placeholder="Опишите вашу проблему подробно..." required></textarea>
+            <button type="submit">Отправить</button>
+        </form>
     </div>
+
+    <!-- СПИСОК ОБРАЩЕНИЙ -->
+    <div class="tickets-list">
+        <h2>📋 Мои обращения</h2>
+
+        {% if tickets %}
+            {% for t in tickets %}
+            <div class="ticket-item">
+                <div class="head">
+                    <span class="id">#{{ t.id }} · {{ t.created_at[:16] if t.created_at else '—' }}</span>
+                    <span class="status
+                        {% if t.status == 'Новое' %}new
+                        {% elif t.status == 'Отвечено' %}answered
+                        {% else %}closed{% endif %}
+                    ">
+                        {% if t.status == 'Новое' %}🟡 Новое
+                        {% elif t.status == 'Отвечено' %}🟢 Отвечено
+                        {% else %}⚪ Закрыто{% endif %}
+                    </span>
+                </div>
+                <div class="message">📩 {{ t.message }}</div>
+
+                {% if t.reply %}
+                <div class="reply">💬 <strong>Ответ поддержки:</strong> {{ t.reply }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty">📭 У вас пока нет обращений</div>
+        {% endif %}
+    </div>
+
+    <a href="/" class="back-link">← Вернуться на главную</a>
+
+</div>
+
 </body>
 </html>
