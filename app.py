@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 import sqlite3
 import hashlib
 import secrets
@@ -10,14 +10,21 @@ app.secret_key = secrets.token_hex(32)
 DB_NAME = os.path.join(os.path.dirname(__file__), "shop.db")
 
 # =============================================
-# ФУНКЦИЯ ХЕШИРОВАНИЯ (ДОЛЖНА БЫТЬ ПЕРВОЙ)
+# ФУНКЦИИ
 # =============================================
+
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
+
+def get_db():
+    conn = sqlite3.connect(DB_NAME)
+    conn.row_factory = sqlite3.Row
+    return conn
 
 # =============================================
 # БАЗА ДАННЫХ
 # =============================================
+
 def init_db():
     conn = sqlite3.connect(DB_NAME)
     cur = conn.cursor()
@@ -29,6 +36,7 @@ def init_db():
             password TEXT NOT NULL,
             is_admin INTEGER DEFAULT 0,
             discord_id TEXT,
+            avatar TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
@@ -87,14 +95,6 @@ def init_db():
     conn.commit()
     conn.close()
 
-def get_db():
-    conn = sqlite3.connect(DB_NAME)
-    conn.row_factory = sqlite3.Row
-    return conn
-
-# =============================================
-# ЗАПУСК БАЗЫ ДАННЫХ
-# =============================================
 init_db()
 
 # =============================================
@@ -161,6 +161,40 @@ def profile():
     conn.close()
     return render_template('profile.html', user=session['user'], orders=orders)
 
+# ===== РЕДАКТИРОВАНИЕ ПРОФИЛЯ =====
+@app.route('/profile/edit', methods=['POST'])
+def edit_profile():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    
+    new_username = request.form.get('new_username', '').strip()
+    if not new_username:
+        return redirect(url_for('profile'))
+    
+    conn = get_db()
+    try:
+        conn.execute('UPDATE users SET username = ? WHERE id = ?', (new_username, session['user']['id']))
+        conn.commit()
+        session['user']['username'] = new_username
+        conn.close()
+        return redirect(url_for('profile'))
+    except:
+        conn.close()
+        return redirect(url_for('profile'))
+
+@app.route('/profile/avatar', methods=['POST'])
+def upload_avatar():
+    if 'user' not in session:
+        return jsonify({'status': 'error'}), 403
+    return jsonify({'status': 'ok'})
+
+@app.route('/profile/discord')
+def discord_bind():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    return redirect(url_for('profile'))
+
+# ===== АДМИНКА =====
 @app.route('/admin')
 def admin():
     if 'user' not in session or session['user']['is_admin'] != 1:
@@ -219,6 +253,7 @@ def reply_support(support_id):
     conn.close()
     return redirect(url_for('admin'))
 
+# ===== КОРЗИНА =====
 @app.route('/cart')
 def cart():
     if 'user' not in session:
@@ -242,6 +277,23 @@ def add_to_cart(service_id):
     session.modified = True
     return redirect(url_for('index'))
 
+@app.route('/cart/remove/<int:service_id>')
+def remove_from_cart(service_id):
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    if 'cart' in session and service_id in session['cart']:
+        session['cart'].remove(service_id)
+        session.modified = True
+    return redirect(url_for('cart'))
+
+@app.route('/cart/clear')
+def clear_cart():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    session['cart'] = []
+    session.modified = True
+    return redirect(url_for('cart'))
+
 @app.route('/order')
 def order():
     if 'user' not in session or 'cart' not in session or not session['cart']:
@@ -256,6 +308,7 @@ def order():
     session.modified = True
     return redirect(url_for('profile'))
 
+# ===== ТЕХПОДДЕРЖКА =====
 @app.route('/support', methods=['GET', 'POST'])
 def support():
     if 'user' not in session:
@@ -273,6 +326,10 @@ def support():
                           (session['user']['id'],)).fetchall()
     conn.close()
     return render_template('support.html', user=session['user'], tickets=tickets)
+
+# =============================================
+# ЗАПУСК
+# =============================================
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
