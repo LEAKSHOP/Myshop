@@ -3,83 +3,596 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LeakShop</title>
+    <title>LeakShop — Настройка ПК для игр</title>
     <link rel="stylesheet" href="/static/style.css">
+    <style>
+        /* ===== ОБЩИЕ ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #070a0f;
+            color: #d0d0d0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px 30px;
+        }
+
+        /* ===== ШАПКА ===== */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 2.4em;
+            font-weight: 900;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #ffffff 30%, #888888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo small {
+            font-size: 0.35em;
+            font-weight: 400;
+            -webkit-text-fill-color: #555;
+            background: none;
+            margin-left: 8px;
+        }
+
+        nav {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #8899aa;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95em;
+            transition: 0.2s;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #ffffff;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #999;
+            transition: 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .btn-header {
+            background: rgba(255,255,255,0.06);
+            color: #fff !important;
+            padding: 10px 28px;
+            border-radius: 40px;
+            font-weight: 700;
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: 0.3s;
+        }
+
+        .btn-header:hover {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .btn-header::after {
+            display: none !important;
+        }
+
+        /* ===== ГЕРОЙ ===== */
+        .hero {
+            text-align: center;
+            padding: 70px 0 50px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 30%, rgba(255,255,255,0.02), transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero .tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 6px 24px;
+            border-radius: 40px;
+            font-size: 0.8em;
+            font-weight: 600;
+            color: #888;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 4.5em;
+            font-weight: 900;
+            line-height: 1.05;
+            background: linear-gradient(135deg, #ffffff 30%, #999999 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            max-width: 800px;
+            margin: 0 auto 20px;
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            color: #667788;
+            max-width: 600px;
+            margin: 0 auto 35px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+            padding: 16px 45px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1.1em;
+            text-decoration: none;
+            transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #8899aa;
+            padding: 16px 45px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1.1em;
+            text-decoration: none;
+            transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.04);
+            display: inline-block;
+        }
+
+        .btn-secondary:hover {
+            color: #fff;
+            border-color: rgba(255,255,255,0.15);
+        }
+
+        /* ===== СТАТИСТИКА ===== */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 30px;
+            padding: 40px 0;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin: 30px 0 50px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item .num {
+            font-size: 2.8em;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .stat-item .label {
+            color: #556677;
+            font-size: 0.9em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        /* ===== О НАС ===== */
+        .about {
+            padding: 40px 0;
+            margin: 20px 0 40px;
+        }
+
+        .about h2 {
+            font-size: 2.5em;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .about h2 span {
+            color: #888;
+        }
+
+        .about p {
+            color: #8899aa;
+            font-size: 1.1em;
+            line-height: 1.7;
+            max-width: 800px;
+        }
+
+        /* ===== УСЛУГИ ===== */
+        .section-title {
+            font-size: 2.8em;
+            font-weight: 800;
+            text-align: center;
+            color: #fff;
+            margin: 50px 0 10px;
+        }
+
+        .section-title span {
+            color: #888;
+        }
+
+        .section-sub {
+            text-align: center;
+            color: #556677;
+            font-size: 1.1em;
+            margin-bottom: 40px;
+        }
+
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            padding: 20px 0 40px;
+        }
+
+        .service-card {
+            background: rgba(20, 24, 32, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 35px 30px;
+            border: 1px solid rgba(255,255,255,0.04);
+            transition: 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.02), transparent 70%);
+            opacity: 0;
+            transition: 0.4s;
+            pointer-events: none;
+        }
+
+        .service-card:hover::before {
+            opacity: 1;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255,255,255,0.08);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+        }
+
+        .service-card .icon {
+            font-size: 3.5em;
+            display: block;
+            margin-bottom: 10px;
+            filter: grayscale(100%);
+            opacity: 0.8;
+        }
+
+        .service-card .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.04);
+            color: #8899aa;
+            font-size: 0.7em;
+            font-weight: 700;
+            padding: 4px 16px;
+            border-radius: 40px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        .service-card .badge.popular {
+            background: rgba(255,255,255,0.06);
+            color: #fff;
+        }
+
+        .service-card h3 {
+            font-size: 1.7em;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .service-card .price {
+            font-size: 2.4em;
+            font-weight: 900;
+            color: #fff;
+            margin: 15px 0 10px;
+        }
+
+        .service-card .price small {
+            font-size: 0.4em;
+            color: #556677;
+            font-weight: 400;
+        }
+
+        .service-card ul {
+            list-style: none;
+            margin: 20px 0 25px;
+        }
+
+        .service-card ul li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            color: #8899aa;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .service-card ul li::before {
+            content: '✦';
+            color: #777;
+            font-weight: 700;
+        }
+
+        .service-card .btn-card {
+            width: 100%;
+            padding: 14px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1em;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+            background: rgba(255,255,255,0.04);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .service-card .btn-card:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.12);
+        }
+
+        .service-card.featured {
+            border-color: rgba(255,255,255,0.06);
+        }
+
+        /* ===== CTA ===== */
+        .cta {
+            text-align: center;
+            padding: 60px 30px;
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.04);
+            margin: 30px 0;
+            background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.01), transparent 80%);
+        }
+
+        .cta h2 {
+            font-size: 2.8em;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .cta p {
+            color: #667788;
+            font-size: 1.2em;
+            max-width: 500px;
+            margin: 15px auto 30px;
+        }
+
+        /* ===== ПОДВАЛ ===== */
+        footer {
+            text-align: center;
+            padding: 40px 0 20px;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            margin-top: 30px;
+            color: #445566;
+            font-size: 0.9em;
+        }
+
+        footer a {
+            color: #667788;
+            text-decoration: none;
+        }
+
+        /* ===== АДАПТАЦИЯ ===== */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero h1 {
+                font-size: 2.8em;
+            }
+            .hero p {
+                font-size: 1.1em;
+            }
+            .section-title {
+                font-size: 2em;
+            }
+            .services {
+                grid-template-columns: 1fr;
+            }
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            .cta h2 {
+                font-size: 2em;
+            }
+            .btn-primary, .btn-secondary {
+                padding: 14px 30px;
+                font-size: 1em;
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
 </head>
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <!-- ШАПКА -->
-        <header>
-            <div class="logo">⚡ <span>Leak</span>Shop</div>
-            <nav>
-                <a href="#about">О нас</a>
-                <a href="#services">Услуги</a>
-                {% if user %}
-                    <a href="/profile">👤 {{ user.username }}</a>
-                    <a href="/cart">🛒 Корзина</a>
-                    {% if user.is_admin == 1 %}<a href="/admin">⚙️ Админка</a>{% endif %}
-                    <a href="/support">🛠 Поддержка</a>
-                    <a href="/logout">🚪 Выйти</a>
-                {% else %}
-                    <a href="/login">Вход</a>
-                    <a href="/register">Регистрация</a>
-                {% endif %}
-            </nav>
-        </header>
-
-        <!-- ГЕРОЙ -->
-        <section class="hero">
-            <h1>Настройка ПК <span>для игр</span></h1>
-            <p>Без читов — только профи настройки системы, BIOS и драйверов</p>
+    <!-- ===== ШАПКА ===== -->
+    <header>
+        <div class="logo">
+            ⚡ Leak<span style="background: none; -webkit-text-fill-color: #777;">Shop</span>
+            <small>настройка ПК</small>
+        </div>
+        <nav>
+            <a href="#about">О нас</a>
+            <a href="#services">Услуги</a>
             {% if user %}
-                <a href="#services" class="btn">Выбрать услугу</a>
+                <a href="/profile">👤 {{ user.username }}</a>
+                <a href="/cart">🛒 Корзина</a>
+                {% if user.is_admin == 1 %}<a href="/admin">⚙️ Админка</a>{% endif %}
+                <a href="/support">🛠 Поддержка</a>
+                <a href="/logout">🚪 Выйти</a>
             {% else %}
-                <a href="/register" class="btn">Начать</a>
+                <a href="/login">Вход</a>
+                <a href="/register" class="btn-header">🚀 Начать</a>
             {% endif %}
-        </section>
+        </nav>
+    </header>
 
-        <!-- О НАС -->
-        <section class="about" id="about">
-            <h2>О нас</h2>
-            <p><strong>LeakShop</strong> — команда экспертов по настройке ПК для игр. Мы работаем с 2024 года и помогли более 150 игрокам выжать максимум из их железа.</p>
-            <p style="margin-top: 10px;">Наша философия — <strong>без читов</strong>. Только системные настройки.</p>
-            <div class="about-grid">
-                <div><span class="num">150+</span><br><span class="label">Настроенных ПК</span></div>
-                <div><span class="num">98%</span><br><span class="label">Довольных клиентов</span></div>
-                <div><span class="num">24/7</span><br><span class="label">Техподдержка</span></div>
-            </div>
-        </section>
-
-        <!-- УСЛУГИ -->
-        <h2 class="section-title" id="services">Наши услуги</h2>
-        <p class="section-sub">Выберите подходящий пакет или услугу</p>
-
-        <div class="services">
-            {% for s in services %}
-            <div class="service-card">
-                <div class="emoji">{{ s.emoji }}</div>
-                <h3>{{ s.name }}</h3>
-                <div class="price">{{ s.price }} ₽</div>
-                <p>{{ s.description }}</p>
-                <span class="badge">{{ s.category }}</span><br>
-                <a href="/add_to_cart/{{ s.id }}" class="btn">В корзину</a>
-            </div>
-            {% endfor %}
+    <!-- ===== ГЕРОЙ ===== -->
+    <section class="hero">
+        <div class="tag">⚡ Профессиональная настройка</div>
+        <h1>Выжми максимум<br>из своего ПК</h1>
+        <p>Без читов, без вирусов — только системная оптимизация, BIOS и драйверы</p>
+        <div class="hero-buttons">
+            {% if user %}
+                <a href="#services" class="btn-primary">Выбрать услугу</a>
+            {% else %}
+                <a href="/register" class="btn-primary">🚀 Начать</a>
+                <a href="#services" class="btn-secondary">Услуги</a>
+            {% endif %}
         </div>
+    </section>
 
-        <!-- DISCORD -->
-        <div style="text-align:center;margin:30px 0;">
-            <a href="https://discord.com/channels/1541869688634744922/1541873920767041536" target="_blank" class="btn" style="background:#2a2a2a;">💬 Перейти в Discord</a>
+    <!-- ===== СТАТИСТИКА ===== -->
+    <div class="stats">
+        <div class="stat-item">
+            <div class="num">150+</div>
+            <div class="label">Настроено ПК</div>
         </div>
-
-        <footer>
-            <p>© 2026 LeakShop</p>
-            <p style="font-size:0.85em;margin-top:5px;">@crymef</p>
-        </footer>
-
+        <div class="stat-item">
+            <div class="num">98%</div>
+            <div class="label">Довольных клиентов</div>
+        </div>
+        <div class="stat-item">
+            <div class="num">24/7</div>
+            <div class="label">Техподдержка</div>
+        </div>
+        <div class="stat-item">
+            <div class="num">⭐ 4.9</div>
+            <div class="label">Средняя оценка</div>
+        </div>
     </div>
+
+    <!-- ===== О НАС ===== -->
+    <section class="about" id="about">
+        <h2>🔥 О <span>нас</span></h2>
+        <p><strong>LeakShop</strong> — команда экспертов по настройке ПК для игр. Мы работаем с 2024 года и помогли более 150 игрокам выжать максимум из их железа.</p>
+        <p style="margin-top:10px;">Наша философия — <strong>без читов</strong>. Только системные настройки, оптимизация Windows, BIOS и драйверов.</p>
+    </section>
+
+    <!-- ===== УСЛУГИ ===== -->
+    <h2 class="section-title" id="services">Наши <span>услуги</span></h2>
+    <p class="section-sub">Выберите пакет или отдельную услугу</p>
+
+    <div class="services">
+        {% for s in services %}
+        <div class="service-card {% if s.category == 'Пакеты' %}featured{% endif %}">
+            <span class="icon">{{ s.emoji }}</span>
+            <div class="badge {% if s.category == 'Пакеты' %}popular{% endif %}">
+                {{ s.category }}
+            </div>
+            <h3>{{ s.name }}</h3>
+            <div class="price">{{ s.price }} ₽ <small>/ услуга</small></div>
+            <p style="color:#667788;font-size:0.95em;margin:10px 0;">{{ s.description }}</p>
+            <a href="/add_to_cart/{{ s.id }}" class="btn-card">В корзину</a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- ===== CTA ===== -->
+    <div class="cta">
+        <h2>Готов прокачать свой ПК? 🔥</h2>
+        <p>Оставь заявку в Discord, и мы начнём настройку уже сегодня</p>
+        <a href="https://discord.com/channels/1541869688634744922/1541873920767041536" target="_blank" class="btn-primary" style="padding: 18px 60px; font-size: 1.2em; display:inline-block;">
+            💬 Перейти в Discord
+        </a>
+    </div>
+
+    <!-- ===== ПОДВАЛ ===== -->
+    <footer>
+        <p>© 2026 LeakShop. Все права защищены.</p>
+        <p style="margin-top:5px;font-size:0.85em;">Разработчик: <a href="#">@crymef</a></p>
+    </footer>
+
+</div>
 
 </body>
 </html>
