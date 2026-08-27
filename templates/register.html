@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-box">
+            <h2>📝 Регистрация</h2>
+            {% if error %}
+            <div class="error">{{ error }}</div>
+            {% endif %}
+            <form method="post">
+                <input type="text" name="username" placeholder="Логин" required>
+                <input type="password" name="password" placeholder="Пароль" required>
+                <input type="text" name="discord_id" placeholder="Discord ID (необязательно)">
+                <button type="submit">Зарегистрироваться</button>
+            </form>
+            <p style="text-align:center;margin-top:15px;color:#8892a8;">Уже есть аккаунт? <a href="/login" style="color:#4f8cf7;">Войди</a></p>
+        </div>
+    </div>
+</body>
+</html>

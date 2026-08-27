@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Поддержка</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛠 Техподдержка</h1>
+            <nav>
+                <a href="/">Главная</a>
+                <a href="/profile">👤 {{ user.username }}</a>
+                <a href="/logout">🚪 Выйти</a>
+            </nav>
+        </header>
+
+        <div class="form-box" style="max-width:600px;">
+            <h3>📩 Создать обращение</h3>
+            <form method="post">
+                <textarea name="message" placeholder="Опишите вашу проблему..." required></textarea>
+                <button type="submit">Отправить</button>
+            </form>
+        </div>
+
+        <div style="margin-top:30px;">
+            <h3>📋 Мои обращения</h3>
+            {% if tickets %}
+                {% for t in tickets %}
+                <div class="order-item">
+                    <span>#{{ t.id }}: {{ t.message[:50] }}...</span>
+                    <span class="status">{{ t.status }}</span>
+                </div>
+                {% if t.reply %}
+                <div style="background:#1a2535;padding:10px;border-radius:8px;margin-bottom:10px;border-left:3px solid #4f8cf7;">
+                    <strong>💬 Ответ:</strong> {{ t.reply }}
+                </div>
+                {% endif %}
+                {% endfor %}
+            {% else %}
+                <p style="color:#8892a8;">У вас нет обращений.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

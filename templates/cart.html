@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Корзина</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛒 Корзина</h1>
+            <nav>
+                <a href="/">Главная</a>
+                <a href="/profile">👤 {{ user.username }}</a>
+                <a href="/logout">🚪 Выйти</a>
+            </nav>
+        </header>
+
+        {% if services %}
+            {% for s in services %}
+            <div class="cart-item">
+                <span>{{ s.emoji }} {{ s.name }}</span>
+                <span>{{ s.price }} ₽</span>
+            </div>
+            {% endfor %}
+            <div class="total">Итого: {{ total }} ₽</div>
+            <a href="/order" class="btn">Оформить заказ</a>
+        {% else %}
+            <p style="color:#8892a8;text-align:center;padding:40px;">🛒 Корзина пуста</p>
+        {% endif %}
+    </div>
+</body>
+</html>

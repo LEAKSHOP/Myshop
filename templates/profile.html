@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ <span>Leak</span>Shop</h1>
+            <nav>
+                <a href="/">Главная</a>
+                <a href="/cart">🛒 Корзина</a>
+                <a href="/support">🛠 Поддержка</a>
+                {% if user.is_admin == 1 %}<a href="/admin">⚙️ Админка</a>{% endif %}
+                <a href="/logout">🚪 Выйти</a>
+            </nav>
+        </header>
+
+        <h2>👤 Привет, {{ user.username }}!</h2>
+        
+        <div style="background:#141a24;padding:20px;border-radius:16px;border:1px solid #232b38;margin:20px 0;">
+            <p><strong>📌 Discord ID:</strong> {{ user.discord_id or 'Не привязан' }}</p>
+            <p><strong>📅 Дата регистрации:</strong> {{ user.created_at[:16] if user.created_at else 'Неизвестно' }}</p>
+        </div>
+
+        <div class="orders">
+            <h3>📦 Мои заказы</h3>
+            {% if orders %}
+                {% for o in orders %}
+                <div class="order-item">
+                    <span>{{ o.emoji }} {{ o.name }}</span>
+                    <span class="status">{{ o.status }}</span>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p style="color:#8892a8;">У тебя пока нет заказов.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

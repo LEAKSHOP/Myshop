@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Админка</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>⚙️ Админ-панель</h1>
+        <nav>
+            <a href="/">Главная</a>
+            <a href="/profile">Профиль</a>
+            <a href="/logout">Выйти</a>
+        </nav>
+
+        <h2>📦 Добавить услугу</h2>
+        <form method="post" action="/admin/add_service">
+            <input type="text" name="emoji" placeholder="🚀" required>
+            <input type="text" name="name" placeholder="Название" required>
+            <input type="text" name="description" placeholder="Описание" required>
+            <input type="number" name="price" placeholder="Цена" required>
+            <select name="category">
+                <option value="Пакеты">Пакеты</option>
+                <option value="Услуги">Услуги</option>
+            </select>
+            <button type="submit">Добавить</button>
+        </form>
+
+        <h2>📋 Услуги</h2>
+        {% for s in services %}
+        <div class="service-item">
+            <span>{{ s.emoji }} {{ s.name }} — {{ s.price }} ₽ ({{ s.category }})</span>
+            <a href="/admin/delete_service/{{ s.id }}">🗑</a>
+        </div>
+        {% endfor %}
+
+        <h2>👥 Пользователи</h2>
+        {% for u in users %}
+        <div>{{ u.username }} {% if u.is_admin == 1 %}👑{% endif %} {% if u.discord_id %}🟣{% endif %}</div>
+        {% endfor %}
+
+        <h2>📋 Заказы</h2>
+        {% for o in orders %}
+        <div class="order-item">
+            <span>#{{ o.id }} — {{ o.username }} — {{ o.service_name }}</span>
+            <span class="status">{{ o.status }}</span>
+        </div>
+        {% endfor %}
+
+        <h2>🛠 Техподдержка</h2>
+        {% for t in support %}
+        <div class="order-item">
+            <span>#{{ t.id }} — {{ t.username }}: {{ t.message[:50] }}...</span>
+            <span class="status">{{ t.status }}</span>
+        </div>
+        <form method="post" action="/admin/reply_support/{{ t.id }}" style="margin-bottom:15px;">
+            <input type="text" name="reply" placeholder="Ответ" required style="width:70%;padding:8px;border-radius:8px;border:1px solid #232b38;background:#0b0e14;color:#fff;">
+            <button type="submit" style="padding:8px 20px;background:#4f8cf7;color:#fff;border:none;border-radius:8px;cursor:pointer;">Отправить</button>
+        </form>
+        {% endfor %}
+    </div>
+</body>
+</html>
