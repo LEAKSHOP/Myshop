@@ -6,26 +6,13 @@
     <title>LeakShop — Настройка ПК для игр</title>
     <link rel="stylesheet" href="/static/style.css">
     <style>
-        /* ===== СБРОС ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0a0a0a; color: #d0d0d0; font-family: 'Segoe UI', Tahoma, sans-serif; overflow-x: hidden; }
 
-        body {
-            background: #0a0a0a;
-            color: #d0d0d0;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            overflow-x: hidden;
-        }
-
-        /* ===== ПОЛНОЭКРАННЫЙ ГЕРОЙ (100vh) ===== */
         .hero-fullscreen {
             position: relative;
             width: 100%;
-            height: 100vh; /* ВСЯ ВЫСОТА ЭКРАНА */
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -34,7 +21,6 @@
             background: #0a0a0a;
         }
 
-        /* ФОН — КАРТИНКА */
         .hero-fullscreen .bg {
             position: absolute;
             top: 0;
@@ -42,11 +28,10 @@
             width: 100%;
             height: 100%;
             background: url('https://yaart-web-alice-images.s3.yandex.net/f4517fa2a27c11f18fb9e64eaad15cfa:1') center/cover no-repeat;
-            opacity: 0.15;
+            opacity: 0.12;
             z-index: 0;
         }
 
-        /* ГРАДИЕНТ ПОВЕРХ */
         .hero-fullscreen .overlay {
             position: absolute;
             top: 0;
@@ -79,7 +64,7 @@
         }
 
         .hero-fullscreen h1 {
-            font-size: 4.8em;
+            font-size: 4.5em;
             font-weight: 900;
             line-height: 1.05;
             color: #fff;
@@ -93,7 +78,7 @@
         }
 
         .hero-fullscreen p {
-            font-size: 1.4em;
+            font-size: 1.3em;
             color: #8899aa;
             max-width: 600px;
             margin: 0 auto 35px;
@@ -143,7 +128,25 @@
             border-color: rgba(255,255,255,0.15);
         }
 
-        /* ===== ШАПКА ПОВЕРХ ГЕРОЯ (ПРОЗРАЧНАЯ) ===== */
+        .btn-discord {
+            background: #5865F2;
+            color: #fff;
+            padding: 16px 50px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1.1em;
+            text-decoration: none;
+            transition: 0.3s;
+            border: none;
+            display: inline-block;
+        }
+
+        .btn-discord:hover {
+            background: #4752c4;
+            transform: translateY(-3px);
+            box-shadow: 0 20px 50px rgba(88, 101, 242, 0.3);
+        }
+
         .header-overlay {
             position: absolute;
             top: 0;
@@ -160,9 +163,7 @@
             pointer-events: none;
         }
 
-        .header-overlay * {
-            pointer-events: auto;
-        }
+        .header-overlay * { pointer-events: auto; }
 
         .logo {
             font-size: 2em;
@@ -170,16 +171,8 @@
             color: #fff;
         }
 
-        .logo span {
-            color: #888;
-        }
-
-        .logo small {
-            font-size: 0.35em;
-            font-weight: 400;
-            color: #555;
-            margin-left: 8px;
-        }
+        .logo span { color: #888; }
+        .logo small { font-size: 0.35em; font-weight: 400; color: #555; margin-left: 8px; }
 
         .header-overlay nav {
             display: flex;
@@ -196,9 +189,7 @@
             transition: 0.2s;
         }
 
-        .header-overlay nav a:hover {
-            color: #fff;
-        }
+        .header-overlay nav a:hover { color: #fff; }
 
         .header-overlay nav .btn-header {
             background: rgba(255,255,255,0.06);
@@ -210,11 +201,8 @@
             transition: 0.3s;
         }
 
-        .header-overlay nav .btn-header:hover {
-            background: rgba(255,255,255,0.12);
-        }
+        .header-overlay nav .btn-header:hover { background: rgba(255,255,255,0.12); }
 
-        /* ===== СТАТИСТИКА ПОД ГЕРОЕМ ===== */
         .stats-section {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -229,24 +217,10 @@
             border: 1px solid #222;
         }
 
-        .stat-item {
-            text-align: center;
-        }
+        .stat-item { text-align: center; }
+        .stat-item .num { font-size: 2.2em; font-weight: 700; color: #fff; }
+        .stat-item .label { color: #888; font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        .stat-item .num {
-            font-size: 2.2em;
-            font-weight: 700;
-            color: #fff;
-        }
-
-        .stat-item .label {
-            color: #888;
-            font-size: 0.8em;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* ===== ОСТАЛЬНЫЕ СЕКЦИИ ===== */
         .section {
             padding: 60px 0;
             max-width: 1300px;
@@ -289,30 +263,10 @@
             transform: translateY(-5px);
         }
 
-        .service-card .emoji {
-            font-size: 3em;
-            filter: grayscale(100%);
-            opacity: 0.8;
-        }
-
-        .service-card h3 {
-            color: #fff;
-            font-size: 1.3em;
-            margin: 10px 0;
-        }
-
-        .service-card .price {
-            font-size: 2em;
-            color: #ddd;
-            font-weight: 700;
-        }
-
-        .service-card p {
-            color: #888;
-            font-size: 0.95em;
-            margin: 10px 0;
-        }
-
+        .service-card .emoji { font-size: 3em; filter: grayscale(100%); opacity: 0.8; }
+        .service-card h3 { color: #fff; font-size: 1.3em; margin: 10px 0; }
+        .service-card .price { font-size: 2em; color: #ddd; font-weight: 700; }
+        .service-card p { color: #888; font-size: 0.95em; margin: 10px 0; }
         .service-card .badge {
             display: inline-block;
             background: #1a1a1a;
@@ -322,21 +276,21 @@
             font-size: 0.8em;
         }
 
-        .service-card .btn {
+        .service-card .btn-discord-card {
             display: inline-block;
-            background: rgba(255,255,255,0.04);
+            background: #5865F2;
             color: #fff;
-            padding: 10px 25px;
+            padding: 12px 30px;
             border-radius: 40px;
             text-decoration: none;
             font-weight: 700;
-            transition: 0.2s;
+            transition: 0.3s;
             margin-top: 15px;
-            border: 1px solid rgba(255,255,255,0.04);
         }
 
-        .service-card .btn:hover {
-            background: rgba(255,255,255,0.08);
+        .service-card .btn-discord-card:hover {
+            background: #4752c4;
+            transform: scale(1.02);
         }
 
         footer {
@@ -349,71 +303,38 @@
             margin: 0 auto;
         }
 
-        footer a {
-            color: #667788;
-            text-decoration: none;
-        }
+        footer a { color: #667788; text-decoration: none; }
 
-        /* ===== АДАПТАЦИЯ ===== */
         @media (max-width: 768px) {
-            .header-overlay {
-                flex-direction: column;
-                text-align: center;
-                padding: 15px;
-            }
-            .hero-fullscreen h1 {
-                font-size: 2.8em;
-            }
-            .hero-fullscreen p {
-                font-size: 1.1em;
-            }
-            .section h2 {
-                font-size: 2em;
-            }
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-            .btn-primary, .btn-secondary {
-                width: 100%;
-                text-align: center;
-            }
-            .stats-section {
-                margin: -30px 10px 0;
-                grid-template-columns: 1fr 1fr;
-            }
+            .header-overlay { flex-direction: column; text-align: center; padding: 15px; }
+            .hero-fullscreen h1 { font-size: 2.8em; }
+            .hero-fullscreen p { font-size: 1.1em; }
+            .section h2 { font-size: 2em; }
+            .services-grid { grid-template-columns: 1fr; }
+            .btn-primary, .btn-secondary, .btn-discord { width: 100%; text-align: center; }
+            .stats-section { margin: -30px 10px 0; grid-template-columns: 1fr 1fr; }
         }
 
         @media (max-width: 480px) {
-            .hero-fullscreen h1 {
-                font-size: 2em;
-            }
-            .stats-section {
-                grid-template-columns: 1fr 1fr;
-            }
+            .hero-fullscreen h1 { font-size: 2em; }
+            .stats-section { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
 <body>
 
-<!-- ===== ПОЛНОЭКРАННЫЙ ГЕРОЙ ===== -->
+<!-- ===== ГЕРОЙ ===== -->
 <section class="hero-fullscreen">
-
-    <!-- ФОН -->
     <div class="bg"></div>
     <div class="overlay"></div>
 
-    <!-- ШАПКА ПОВЕРХ -->
     <div class="header-overlay">
-        <div class="logo">
-            ⚡ <span>Leak</span>Shop
-            <small>настройка ПК</small>
-        </div>
+        <div class="logo">⚡ <span>Leak</span>Shop <small>настройка ПК</small></div>
         <nav>
             <a href="#about">О нас</a>
             <a href="#services">Услуги</a>
             {% if user %}
                 <a href="/profile">👤 {{ user.username }}</a>
-                <a href="/cart">🛒 Корзина</a>
                 {% if user.is_admin == 1 %}<a href="/admin" style="color:#f87171;">⚙️ Админка</a>{% endif %}
                 <a href="/support">🛠 Поддержка</a>
                 <a href="/logout">🚪 Выйти</a>
@@ -424,53 +345,36 @@
         </nav>
     </div>
 
-    <!-- ЦЕНТРАЛЬНЫЙ КОНТЕНТ -->
     <div class="content">
         <div class="tag">⚡ Профессиональная настройка</div>
         <h1>Выжми максимум<br><span>из своего ПК</span></h1>
-        <p>Без читов, без вирусов — только системная оптимизация, BIOS и драйверы</p>
+        <p>Без читов — только системная оптимизация, BIOS и драйверы</p>
         <div class="buttons">
-            {% if user %}
-                <a href="#services" class="btn-primary">Выбрать услугу</a>
-            {% else %}
-                <a href="/register" class="btn-primary">🚀 Начать</a>
-                <a href="#services" class="btn-secondary">Услуги</a>
-            {% endif %}
+            <a href="#services" class="btn-primary">Выбрать услугу</a>
+            <a href="https://discord.com/channels/1541869688634744922/1541873920767041536" class="btn-discord">💬 Заказать в Discord</a>
         </div>
     </div>
 </section>
 
 <!-- ===== СТАТИСТИКА ===== -->
 <div class="stats-section">
-    <div class="stat-item">
-        <div class="num">150+</div>
-        <div class="label">Настроено ПК</div>
-    </div>
-    <div class="stat-item">
-        <div class="num">98%</div>
-        <div class="label">Довольных клиентов</div>
-    </div>
-    <div class="stat-item">
-        <div class="num">24/7</div>
-        <div class="label">Техподдержка</div>
-    </div>
-    <div class="stat-item">
-        <div class="num">⭐ 4.9</div>
-        <div class="label">Средняя оценка</div>
-    </div>
+    <div class="stat-item"><div class="num">150+</div><div class="label">Настроено ПК</div></div>
+    <div class="stat-item"><div class="num">98%</div><div class="label">Довольных клиентов</div></div>
+    <div class="stat-item"><div class="num">24/7</div><div class="label">Техподдержка</div></div>
+    <div class="stat-item"><div class="num">⭐ 4.9</div><div class="label">Средняя оценка</div></div>
 </div>
 
 <!-- ===== О НАС ===== -->
 <section class="section" id="about">
     <h2>🔥 О нас</h2>
-    <p><strong>LeakShop</strong> — команда экспертов по настройке ПК для игр. Мы работаем с 2024 года и помогли более 150 игрокам выжать максимум из их железа.</p>
-    <p style="margin-top:10px;">Наша философия — <strong>без читов</strong>. Только системные настройки, оптимизация Windows, BIOS и драйверов.</p>
+    <p><strong>LeakShop</strong> — команда экспертов по настройке ПК для игр. Работаем с 2024 года.</p>
+    <p style="margin-top:10px;">Наша философия — <strong>без читов</strong>. Только системные настройки, BIOS и драйверы.</p>
 </section>
 
 <!-- ===== УСЛУГИ ===== -->
 <section class="section" id="services">
     <h2>📦 Наши услуги</h2>
-    <p style="color:#888;margin-bottom:30px;">Выберите пакет или отдельную услугу</p>
+    <p style="color:#888;margin-bottom:30px;">Выберите услугу и оставьте заявку в Discord</p>
     <div class="services-grid">
         {% for s in services %}
         <div class="service-card">
@@ -479,7 +383,7 @@
             <div class="price">{{ s.price }} ₽</div>
             <p>{{ s.description }}</p>
             <span class="badge">{{ s.category }}</span><br>
-            <a href="/add_to_cart/{{ s.id }}" class="btn">В корзину</a>
+            <a href="https://discord.com/channels/1541869688634744922/1541873920767041536" class="btn-discord-card" target="_blank">💬 Заказать</a>
         </div>
         {% endfor %}
     </div>
