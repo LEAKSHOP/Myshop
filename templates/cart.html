@@ -1,33 +1,314 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Корзина</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина — LeakShop</title>
     <link rel="stylesheet" href="/static/style.css">
+    <style>
+        /* ===== КОРЗИНА ===== */
+        .cart-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #222;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .cart-header h1 {
+            font-size: 2em;
+            color: #fff;
+        }
+        .cart-header h1 span {
+            color: #888;
+        }
+
+        .cart-header nav a {
+            color: #aaa;
+            text-decoration: none;
+            margin-left: 20px;
+            transition: 0.2s;
+        }
+        .cart-header nav a:hover {
+            color: #fff;
+        }
+
+        /* ===== СПИСОК ===== */
+        .cart-list {
+            margin: 30px 0;
+        }
+
+        .cart-item {
+            background: #111;
+            border-radius: 16px;
+            border: 1px solid #222;
+            padding: 20px 25px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            transition: 0.2s;
+        }
+
+        .cart-item:hover {
+            border-color: #333;
+        }
+
+        .cart-item .left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .cart-item .left .emoji {
+            font-size: 2.5em;
+            filter: grayscale(100%);
+            opacity: 0.8;
+        }
+
+        .cart-item .left .info .name {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .cart-item .left .info .category {
+            font-size: 0.8em;
+            color: #555;
+        }
+
+        .cart-item .right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .cart-item .right .price {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #ddd;
+        }
+
+        .cart-item .right .remove-btn {
+            background: none;
+            border: none;
+            color: #555;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: 0.2s;
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+
+        .cart-item .right .remove-btn:hover {
+            color: #f87171;
+            background: #1a0a0a;
+        }
+
+        /* ===== ИТОГО ===== */
+        .cart-summary {
+            background: #111;
+            border-radius: 16px;
+            border: 1px solid #222;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .cart-summary .total-label {
+            color: #888;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cart-summary .total-price {
+            font-size: 2em;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .cart-summary .total-price small {
+            font-size: 0.5em;
+            color: #555;
+        }
+
+        .cart-summary .actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-checkout {
+            background: rgba(255,255,255,0.06);
+            color: #fff;
+            padding: 14px 40px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1em;
+            border: 1px solid rgba(255,255,255,0.06);
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-checkout:hover {
+            background: rgba(255,255,255,0.12);
+            transform: translateY(-2px);
+        }
+
+        .btn-clear {
+            background: transparent;
+            color: #555;
+            padding: 14px 30px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.9em;
+            border: 1px solid rgba(255,255,255,0.04);
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-clear:hover {
+            color: #f87171;
+            border-color: rgba(248, 113, 113, 0.15);
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 60px 0;
+            color: #555;
+        }
+
+        .empty-cart .big-icon {
+            font-size: 4em;
+            display: block;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .empty-cart .btn {
+            display: inline-block;
+            background: rgba(255,255,255,0.06);
+            color: #fff;
+            padding: 14px 40px;
+            border-radius: 60px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.3s;
+            margin-top: 15px;
+        }
+
+        .empty-cart .btn:hover {
+            background: rgba(255,255,255,0.12);
+        }
+
+        @media (max-width: 768px) {
+            .cart-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .cart-header nav a {
+                margin: 0 10px;
+            }
+            .cart-item {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .cart-item .left {
+                justify-content: center;
+            }
+            .cart-item .right {
+                justify-content: center;
+            }
+            .cart-summary {
+                flex-direction: column;
+                text-align: center;
+            }
+            .cart-summary .actions {
+                justify-content: center;
+                width: 100%;
+            }
+            .btn-checkout, .btn-clear {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🛒 Корзина</h1>
-            <nav>
-                <a href="/">Главная</a>
-                <a href="/profile">👤 {{ user.username }}</a>
-                <a href="/logout">🚪 Выйти</a>
-            </nav>
-        </header>
 
+<div class="cart-container">
+
+    <header class="cart-header">
+        <h1>🛒 <span>Корзина</span></h1>
+        <nav>
+            <a href="/">🏠 Главная</a>
+            <a href="/profile">👤 Профиль</a>
+            <a href="/support">🛠 Поддержка</a>
+            <a href="/logout">🚪 Выйти</a>
+        </nav>
+    </header>
+
+    <div class="cart-list">
         {% if services %}
             {% for s in services %}
             <div class="cart-item">
-                <span>{{ s.emoji }} {{ s.name }}</span>
-                <span>{{ s.price }} ₽</span>
+                <div class="left">
+                    <span class="emoji">{{ s.emoji }}</span>
+                    <div class="info">
+                        <div class="name">{{ s.name }}</div>
+                        <div class="category">{{ s.category }}</div>
+                    </div>
+                </div>
+                <div class="right">
+                    <span class="price">{{ s.price }} ₽</span>
+                    <a href="/cart/remove/{{ s.id }}" class="remove-btn">✕</a>
+                </div>
             </div>
             {% endfor %}
-            <div class="total">Итого: {{ total }} ₽</div>
-            <a href="/order" class="btn">Оформить заказ</a>
         {% else %}
-            <p style="color:#8892a8;text-align:center;padding:40px;">🛒 Корзина пуста</p>
+            <div class="empty-cart">
+                <span class="big-icon">🛒</span>
+                <p>Корзина пуста</p>
+                <p style="font-size:0.85em;margin-top:5px;">Добавьте услуги из каталога</p>
+                <a href="/#services" class="btn">Перейти к услугам</a>
+            </div>
         {% endif %}
     </div>
+
+    {% if services %}
+    <div class="cart-summary">
+        <div>
+            <div class="total-label">Итого</div>
+            <div class="total-price">{{ total }} ₽ <small>за {{ services|length }} услуги</small></div>
+        </div>
+        <div class="actions">
+            <a href="/order" class="btn-checkout">✅ Оформить заказ</a>
+            <a href="/cart/clear" class="btn-clear">🗑 Очистить</a>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
 </body>
 </html>
